@@ -31,22 +31,15 @@ app.post('/weather', ( req, res ) => {
     .then( response => {
       let temperature = response.data.consolidated_weather[0].the_temp;
       console.log(response.data.consolidated_weather[0].the_temp);
-      dialogflowResponse.fulfillmentText = temperature;
+      dialogflowResponse.fulfillmentText = `The temperature for ${city} is ${temperature} degrees`;
       res.json(dialogflowResponse);
     })
     .catch(err => {
       console.log(err);
       let errorResponse = `Oops! The programmer made a mistake. Please try a different query!`;
-      dialogflowResponse.fulfillmentText = `The temperature for ${city} is ${temperature} degrees`;
+      dialogflowResponse.fulfillmentText = errorResponse;
       response.json(dialogflowResponse);
     });
-    
-  //get temperature from the woeID
-
-  //return temperature
-
-  //send back temperature to dialgoflow
-
   
 });
 
