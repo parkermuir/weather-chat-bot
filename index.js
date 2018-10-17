@@ -25,16 +25,19 @@ app.post('/weather', ( req, res ) => {
     .then( res => {
       let woeID = res.data[0].woeid;
       console.log(woeID);
-      return woeid;
+      return woeID;
     })
-    .then( woeid => axios.get(urls.getWeather + woied))
-    .then( res => {
-      console.log(res.data);
+    .then( woeid => axios.get(urls.getWeather + woeid))
+    .then( response => {
+      let temperature = response.data.consolidated_weather[0].the_temp;
+      console.log(response.data.consolidated_weather[0].the_temp);
+      dialogflowResponse.fulfillmentText = temperature;
+      res.json(dialogflowResponse);
     })
     .catch(err => {
       console.log(err);
       let errorResponse = `Oops! The programmer made a mistake. Please try a different query!`;
-      dialogflowResponse.fulfillmentText = errorResponse;
+      dialogflowResponse.fulfillmentText = `The temperature for ${city} is ${temperature} degrees`;
       response.json(dialogflowResponse);
     });
     
@@ -45,8 +48,6 @@ app.post('/weather', ( req, res ) => {
   //send back temperature to dialgoflow
 
   
-  dialogflowResponse.fulfillmentText = city;
-  res.json(dialogflowResponse);
 });
 
 app.listen(3000, () => console.log('Whether or not server listening on port 3000'));
